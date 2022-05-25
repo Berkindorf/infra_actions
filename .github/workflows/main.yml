@@ -61,4 +61,14 @@ jobs:
             sudo docker pull berkindorf/wf5k:latest
             sudo docker stop $(sudo docker ps -a -q)
             sudo docker run --rm -d -p 5000:5000 berkindorf/wf5k:latest
-
+ 
+  send_message:
+    runs_on: ubuntu-latest
+    needs: deply
+    steps:
+      - name: send message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: ${{ github.workflow }} успешно выполнен!
